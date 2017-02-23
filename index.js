@@ -5,19 +5,8 @@
 * @Last modified by:   john
 * @Last modified time: 23-Feb-172017
  */
-var rows, columns, minc, cells;
+var v,e,r,c,x;
 var firstline = true;
-var fullPizza = [];
-var slices = [];
-var filename;
-var lineNo = 0;
-var column = 0;
-var row = 0; //parseInt(rows)-1;
-var tcount = 0;
-var mcount = 0;
-var startRow =0;
-var startColumn =0;
-var cellcount =0;
 
 
 var fs = require('fs')
@@ -36,7 +25,7 @@ lr.on('error', function(err) {
 });
 
 lr.on('line', function(line) {
-    processPizzaLine(line);
+    processLine(line);
     // 'line' contains the current line without the trailing newline character.
 });
 
@@ -50,6 +39,25 @@ lr.on('end', function() {
 
 
 
+
+function processLine(line){
+  if (firstline) {
+      firstline = false;
+      v = parseInt(line.split(" ")[0]);
+      e = parseInt(line.split(" ")[1]);
+      r = parseInt(line.split(" ")[2]);
+      c = parseInt(line.split(" ")[3]);
+      x = parseInt(line.split(" ")[4]);
+      console.log("vids: " + v + " endpoints: " + e + " requests: " + r + " cacheservers: " + c + " capacity: ");
+  } else {
+      var row = [];
+      for (var c = 0; c < columns; c++) {
+          row.push(line[c]);
+      }
+      fullPizza.push(row);
+      lineNo++;
+  }
+}
 
 
 
