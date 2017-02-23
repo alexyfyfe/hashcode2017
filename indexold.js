@@ -3,7 +3,7 @@
  * @Date:   06-Feb-172017
  * @Filename: index.js
 * @Last modified by:   john
-* @Last modified time: 23-Feb-172017
+* @Last modified time: 18-Feb-172017
  */
 var rows, columns, minc, cells;
 var firstline = true;
@@ -48,7 +48,95 @@ lr.on('end', function() {
     writeOutput(slices);
 });
 
+function processPizzaLine(line) {
+    if (firstline) {
+        firstline = false;
+        rows = parseInt(line.split(" ")[0]);
+        columns = parseInt(line.split(" ")[1]);
+        minc = parseInt(line.split(" ")[2]);
+        cells = parseInt(line.split(" ")[3]);
+        console.log("rows: " + rows + " columns: " + columns + " minimum item: " + minc + " max cells: " + cells);
+    } else {
+        var row = [];
+        for (var c = 0; c < columns; c++) {
+            row.push(line[c]);
+        }
+        fullPizza.push(row);
+        lineNo++;
+    }
+}
 
+function quickSolution() {
+
+
+        goingDown();
+
+}
+
+function goingDown(){
+  while (cellcount < cells  ) {
+    if (fullPizza[row][column] === 'T') {
+        tcount++;
+    }
+    if (fullPizza[row][column] === 'M') {
+        mcount++;
+    }
+    checkSlice();
+    cellcount++;
+    row++;
+    if(row>=rows){
+      break;
+    }
+  }
+  switchDir("down");
+}
+function goingUp(){
+  while (cellcount < cells ) {
+    if (fullPizza[row][column] === 'T') {
+        tcount++;
+    }
+    if (fullPizza[row][column] === 'M') {
+        mcount++;
+    }
+    checkSlice();
+    cellcount++;
+    row--;
+    if(row<=0){
+      break;
+    }
+  }
+
+  switchDir("up");
+}
+function switchDir(dir){
+  column++;
+  if(dir === "up"){
+    goingDown();
+  }
+  else{
+    goingUp();
+  }
+
+}
+function checkSlice(){
+  if(cellcount>cells){
+    cellcount =0 ;
+    startRow = row+1;
+    startColumn = column+1;
+  }
+  if ((parseInt(tcount) >= parseInt(minc)) && (parseInt(mcount) >= parseInt(minc))) {
+      console.log(tcount + ":" + mcount + ":" + minc);
+      storeSlice(startRow, startColumn, row, column);
+      startRow = row+1;
+      startColumn = column+1;
+      cellcount =0;
+  }
+}
+function storeSlice(startRow, startColumn, endRow, endColumn){
+  var slice = [startRow + " ", startColumn + " ", endRow+ " ", endColumn + " "];
+  slices.push(slice);
+}
+//console.log(slices);
 
 
 
